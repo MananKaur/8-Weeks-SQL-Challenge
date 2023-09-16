@@ -106,4 +106,16 @@ Select customer_id, sum(points) from (
 
 	where sales.order_date < '2021-02-01' and sales.customer_id in ('A', 'B')) subquery
 group by customer_id
-order by customer_id
+order by customer_id;
+
+--Bonus Question 
+Select *, case when member = 'N' then null
+else rank() over (partition by customer_id, member order by order_date) end as rank from (
+  Select sales.customer_id, sales.order_date, menu.product_name, menu.price, 
+  case when sales.order_date >= members.join_date then 'Y' else 'N' end as member 
+  from dannys_diner.sales 
+  left join dannys_diner.menu on 
+  sales.product_id = menu.product_id
+  left join dannys_diner.members on
+  sales.customer_id = members.customer_id) subquery
+
