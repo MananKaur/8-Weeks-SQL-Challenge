@@ -118,4 +118,3 @@ else rank() over (partition by customer_id, member order by order_date) end as r
   sales.product_id = menu.product_id
   left join dannys_diner.members on
   sales.customer_id = members.customer_id) subquery
-
